@@ -4,11 +4,10 @@ import { Porquemon } from './porquemon';
 import { peticionService } from './peticion.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-FormsModule
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

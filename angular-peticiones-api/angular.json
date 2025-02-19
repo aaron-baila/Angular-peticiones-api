@@ -16,6 +16,8 @@
             "outputPath": "dist/angular-peticiones-api",
             "index": "src/index.html",
             "browser": "src/main.ts",
+            // "baseHref": "/angular-peticiones-api/",
+            "baseHref": "/",
             "polyfills": [
               "zone.js"
             ],
@@ -42,7 +44,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumError": "20kB"
                 }
               ],
               "outputHashing": "all"
