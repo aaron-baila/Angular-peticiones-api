@@ -1,0 +1,132 @@
+
+<section>
+  <!-- Mostrar mensaje si no se encuentran resultados -->
+  <!-- <div *ngIf="noResults" class="no-results">No se encontraron Pokémon.</div> -->
+
+  <!-- Mostrar los Pokémon encontrados -->
+  <section class="results">
+    <div id="pokedex">
+      <!-- Parte izquierda de la Pokedex (interfaz visual) -->
+      <div id="left">
+        <div id="logo"></div>
+        <div id="bg_curve1_left"></div>
+        <div id="bg_curve2_left"></div>
+        <div id="curve1_left">
+          <div id="buttonGlass">
+            <div id="reflect"></div>
+          </div>
+          <div id="miniButtonGlass1"></div>
+          <div id="miniButtonGlass2"></div>
+          <div id="miniButtonGlass3"></div>
+        </div>
+        <div id="curve2_left">
+          <div id="junction">
+            <div id="junction1"></div>
+            <div id="junction2"></div>
+          </div>
+        </div>
+        <div id="screen">
+          <div id="topPicture">
+            <div id="buttontopPicture1"></div>
+            <div id="buttontopPicture2"></div>
+          </div>
+          <div id="picture">
+            <img
+              *ngIf="pokemon"
+              class="listing-image"
+              [src]="pokemon.image"
+              alt="{{ pokemon.name }}"
+            />
+          </div>
+          <div id="buttonbottomPicture"></div>
+          <div id="speakers">
+            <div class="sp"></div>
+            <div class="sp"></div>
+            <div class="sp"></div>
+            <div class="sp"></div>
+          </div>
+        </div>
+        <div id="bigbluebutton"></div>
+        <div id="barbutton1"></div>
+        <div id="barbutton2">
+          <button id="borrarbutton" (click)="clearSearch()">Borrar</button>
+        </div>
+        <div id="cross">
+          <div id="leftcross">
+            <div id="leftT"></div>
+          </div>
+          <div id="topcross">
+            <div id="upT"></div>
+          </div>
+          <div id="rightcross">
+            <div id="rightT"></div>
+          </div>
+          <div id="midcross">
+            <div id="midCircle"></div>
+          </div>
+          <div id="botcross">
+            <div id="downT"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parte derecha de la Pokedex (detalles del Pokémon) -->
+      <div id="right">
+        <div id="stats">
+          <div *ngIf="pokemon">
+            <strong>Nombre:</strong> {{ pokemon.name }}<br />
+            <strong>Tipo:</strong> {{ pokemon.type }}<br />
+            <strong>Altura:</strong> {{ pokemon.height }}<br />
+            <strong>Peso:</strong> {{ pokemon.weight }}<br /><br />
+            <strong>{{ pokemon.genus }}</strong
+            ><br />
+            <p>{{ pokemon.description }}</p>
+            <br /><br />
+          </div>
+        </div>
+
+        <!-- Botones de la Pokedex -->
+        <div id="blueButtons1">
+          <div class="blueButton" (click)="addNumber(1)">1</div>
+          <div class="blueButton" (click)="addNumber(2)">2</div>
+          <div class="blueButton" (click)="addNumber(3)">3</div>
+          <div class="blueButton" (click)="addNumber(4)">4</div>
+          <div class="blueButton" (click)="addNumber(5)">5</div>
+        </div>
+
+        <div id="blueButtons2">
+          <div class="blueButton" (click)="addNumber(6)">6</div>
+          <div class="blueButton" (click)="addNumber(7)">7</div>
+          <div class="blueButton" (click)="addNumber(8)">8</div>
+          <div class="blueButton" (click)="addNumber(9)">9</div>
+          <div class="blueButton" (click)="addNumber(0)">0</div>
+        </div>
+
+        <div id="yellowBox1">
+          <!-- Formulario de búsqueda -->
+          <form (ngSubmit)="searchPokemon()">
+            <input
+              type="text"
+              placeholder="Buscar"
+              [(ngModel)]="searchTerm"
+              name="searchTerm"
+              (input)="searchPokemon()"
+              readonly
+            />
+          </form>
+        </div>
+
+        <div id="yellowBox2"></div>
+        <div id="bg_curve1_right"></div>
+        <div id="bg_curve2_right"></div>
+        <div id="curve1_right"></div>
+        <div id="curve2_right"></div>
+
+        <!-- Botón para borrar -->
+        <!-- <div id="deleteButton">
+          <button (click)="clearSearch()">Borrar</button>
+        </div> -->
+      </div>
+    </div>
+  </section>
+</section>
