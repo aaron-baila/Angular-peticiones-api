@@ -3,14 +3,12 @@ import { Pokemon } from './pokemon';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-
-
 @Injectable({
   providedIn: 'root',
 })
 export class PeticionService {
   url = 'https://pokeapi.co/api/v2/pokemon';
-
+  isShiny: boolean = false;
   // constructor(private http :HttpClient){}
 
   // getTotalPokemons(): Observable<any> {
@@ -18,7 +16,7 @@ export class PeticionService {
   // }
   /**
    * Busca un Pokémon por nombre o ID y obtiene su información y descripción.
-   * 
+   *
    * @param searchTerm Término de búsqueda (nombre o ID del Pokémon).
    * @returns Una promesa que resuelve en un objeto `Porquemon` o `null` si no se encuentra.
    */
@@ -33,11 +31,15 @@ export class PeticionService {
 
         const genus = this.getPokemonGenus(speciesData);
         const description = this.getPokemonDescription(speciesData);
+        let version = data.sprites.front_default;
+        if (this.isShiny) {
+          version = data.sprites.front_shiny;
+        }
 
         const pokemonInstance: Pokemon = {
           name: data.name,
           id: data.id,
-          image: data.sprites.front_default,
+          image: version,
           type: data.types[0].type.name,
           weight: data.weight,
           height: data.height,
@@ -57,7 +59,7 @@ export class PeticionService {
 
   /**
    * Obtiene los datos de la especie del Pokémon.
-   * 
+   *
    * @param pokemonId ID del Pokémon cuyo detalle de especie se desea obtener.
    * @returns Los datos de la especie del Pokémon.
    */
@@ -69,23 +71,32 @@ export class PeticionService {
 
   /**
    * Extrae el "genus" (tipo corto del Pokémon) de los datos de la especie.
-   * 
+   *
    * @param speciesData Datos de la especie del Pokémon.
    * @returns El "genus" del Pokémon.
    */
   private getPokemonGenus(speciesData: any): string {
-    return speciesData.genera.find((entry: any) => entry.language.name === 'es')?.genus || 'Tipo no disponible';
+    return (
+      speciesData.genera.find((entry: any) => entry.language.name === 'es')
+        ?.genus || 'Tipo no disponible'
+    );
   }
 
   /**
    * Extrae la descripción del Pokémon de los datos de la especie.
-   * 
+   *
    * @param speciesData Datos de la especie del Pokémon.
    * @returns La descripción del Pokémon.
    */
   private getPokemonDescription(speciesData: any): string {
-    return speciesData.flavor_text_entries.find(
-      (entry: any) => entry.language.name === 'es'
-    )?.flavor_text || 'Descripción no disponible';
+    return (
+      speciesData.flavor_text_entries.find(
+        (entry: any) => entry.language.name === 'es'
+      )?.flavor_text || 'Descripción no disponible'
+    );
+  }
+
+  changeShinyVersion(): void {
+    this.isShiny = !this.isShiny;
   }
 }

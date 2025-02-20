@@ -30,6 +30,7 @@
             <div id="buttontopPicture2"></div>
           </div>
           <div id="picture">
+            <div id="starShiny" *ngIf="isShiny">★</div>
             <img
               *ngIf="pokemon"
               class="listing-image"
@@ -45,7 +46,7 @@
             <div class="sp"></div>
           </div>
         </div>
-        <div id="bigbluebutton"></div>
+        <div (click)="changeShinyVersion()" id="bigbluebutton"></div>
         <div id="barbutton1" class="button-press"></div>
         <div id="barbutton2" (click)="clearSearch()">
           <button id="borrarbutton">Borrar</button>
