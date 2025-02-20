@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Porquemon } from './porquemon';
+import { Pokemon } from './pokemon';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+
 
 @Injectable({
   providedIn: 'root',
@@ -7,13 +11,18 @@ import { Porquemon } from './porquemon';
 export class PeticionService {
   url = 'https://pokeapi.co/api/v2/pokemon';
 
+  // constructor(private http :HttpClient){}
+
+  // getTotalPokemons(): Observable<any> {
+  //   return this.http.get<any>(`${this.url}/?limit=1`);
+  // }
   /**
    * Busca un Pokémon por nombre o ID y obtiene su información y descripción.
    * 
    * @param searchTerm Término de búsqueda (nombre o ID del Pokémon).
    * @returns Una promesa que resuelve en un objeto `Porquemon` o `null` si no se encuentra.
    */
-  async searchPokemon(searchTerm: string): Promise<Porquemon | null> {
+  async searchPokemon(searchTerm: string): Promise<Pokemon | null> {
     const searchUrl = `${this.url}/${searchTerm.toLowerCase()}`;
     try {
       const response = await fetch(searchUrl);
@@ -25,7 +34,7 @@ export class PeticionService {
         const genus = this.getPokemonGenus(speciesData);
         const description = this.getPokemonDescription(speciesData);
 
-        const pokemonInstance: Porquemon = {
+        const pokemonInstance: Pokemon = {
           name: data.name,
           id: data.id,
           image: data.sprites.front_default,
