@@ -20,7 +20,7 @@ export class peticionService {
       if (response.ok) {
         const data = await response.json();
 
-        // Obtener los detalles adicionales del Pokémon (Descripción)
+        // // Obtener los detalles adicionales del Pokémon (Descripción)
         const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${data.id}`;
         const speciesResponse = await fetch(speciesUrl);
         const speciesData = await speciesResponse.json();
@@ -58,4 +58,20 @@ export class peticionService {
       return null;
     }
   }
+  // private async searchDetails(){
+  //     // Obtener los detalles adicionales del Pokémon (Descripción)
+  //     const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${data.id}`;
+  //     const speciesResponse = await fetch(speciesUrl);
+  //     const speciesData = await speciesResponse.json();
+
+  //     // Buscar el "genus" (tipo corto del Pokémon, como "The Duck Pokémon")
+  //     const genus =
+  //       speciesData.genera.find((entry: any) => entry.language.name === 'es')
+  //         ?.genus || 'Tipo no disponible';
+
+  //     const description =
+  //       speciesData.flavor_text_entries.find(
+  //         (entry: any) => entry.language.name === 'es'
+  //       )?.flavor_text || 'Descripción no disponible';
+  // }
 }

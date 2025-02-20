@@ -9,13 +9,33 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-root',
   imports: [CommonModule, FormsModule, RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
   title = 'angular-peticiones-api';
   searchTerm: string = ''; // Término de búsqueda inicial
   pokemon: Porquemon | null = null; // Pokémon encontrado, inicializado como null
   noResults: boolean = false; // Indica si no se encuentran resultados
+
+  nextPokemon() {
+    if (this.pokemon == null) {
+      this.searchTerm = '1';
+    } else {
+      const numeroPokemonActual: number = this.pokemon.id + 1;
+      this.searchTerm = numeroPokemonActual.toString();
+    }
+    this.searchPokemon();
+  }
+
+  beforePokemon() {
+    if (this.pokemon == null || this.pokemon.id == 1) {
+      this.searchTerm = '1025';  
+    } else {
+      const numeroPokemonActual: number = this.pokemon.id - 1;
+      this.searchTerm = numeroPokemonActual.toString();
+    }
+    this.searchPokemon();
+  }
 
   addNumber(num: number) {
     this.searchTerm += num; // Agrega el número al campo de búsqueda
