@@ -1,41 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Porquemon } from './porquemon';
+
 @Injectable({
   providedIn: 'root',
 })
-export class peticionService {
+export class PeticionService {
   url = 'https://pokeapi.co/api/v2/pokemon';
 
-  // Método para obtener los detalles adicionales de un Pokémon
-  async getPokemonDetails(url: string): Promise<any> {
-    const response = await fetch(url);
-    return await response.json();
-  }
-
-  // Método para buscar un Pokémon por nombre o id
+  /**
+   * Busca un Pokémon por nombre o ID y obtiene su información y descripción.
+   * 
+   * @param searchTerm Término de búsqueda (nombre o ID del Pokémon).
+   * @returns Una promesa que resuelve en un objeto `Porquemon` o `null` si no se encuentra.
+   */
   async searchPokemon(searchTerm: string): Promise<Porquemon | null> {
-    const searchUrl = `${this.url}/${searchTerm.toLowerCase()}`; // Construir URL para buscar por nombre o id
+    const searchUrl = `${this.url}/${searchTerm.toLowerCase()}`;
     try {
       const response = await fetch(searchUrl);
       if (response.ok) {
         const data = await response.json();
 
-        // // Obtener los detalles adicionales del Pokémon (Descripción)
-        const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${data.id}`;
-        const speciesResponse = await fetch(speciesUrl);
-        const speciesData = await speciesResponse.json();
+        const speciesData = await this.getPokemonSpeciesData(data.id);
 
-        // Buscar el "genus" (tipo corto del Pokémon, como "The Duck Pokémon")
-        const genus =
-          speciesData.genera.find((entry: any) => entry.language.name === 'es')
-            ?.genus || 'Tipo no disponible';
+        const genus = this.getPokemonGenus(speciesData);
+        const description = this.getPokemonDescription(speciesData);
 
-        const description =
-          speciesData.flavor_text_entries.find(
-            (entry: any) => entry.language.name === 'es'
-          )?.flavor_text || 'Descripción no disponible';
-
-        // Crear el objeto Pokémon con los datos obtenidos
         const pokemonInstance: Porquemon = {
           name: data.name,
           id: data.id,
@@ -47,10 +36,8 @@ export class peticionService {
           description: description,
         };
 
-        // Devolver la instancia del Pokémon
         return pokemonInstance;
       } else {
-        // Si no se encuentra el Pokémon, devolver null
         return null;
       }
     } catch (error) {
@@ -58,20 +45,38 @@ export class peticionService {
       return null;
     }
   }
-  // private async searchDetails(){
-  //     // Obtener los detalles adicionales del Pokémon (Descripción)
-  //     const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${data.id}`;
-  //     const speciesResponse = await fetch(speciesUrl);
-  //     const speciesData = await speciesResponse.json();
 
-  //     // Buscar el "genus" (tipo corto del Pokémon, como "The Duck Pokémon")
-  //     const genus =
-  //       speciesData.genera.find((entry: any) => entry.language.name === 'es')
-  //         ?.genus || 'Tipo no disponible';
+  /**
+   * Obtiene los datos de la especie del Pokémon.
+   * 
+   * @param pokemonId ID del Pokémon cuyo detalle de especie se desea obtener.
+   * @returns Los datos de la especie del Pokémon.
+   */
+  private async getPokemonSpeciesData(pokemonId: number): Promise<any> {
+    const speciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`;
+    const speciesResponse = await fetch(speciesUrl);
+    return await speciesResponse.json();
+  }
 
-  //     const description =
-  //       speciesData.flavor_text_entries.find(
-  //         (entry: any) => entry.language.name === 'es'
-  //       )?.flavor_text || 'Descripción no disponible';
-  // }
+  /**
+   * Extrae el "genus" (tipo corto del Pokémon) de los datos de la especie.
+   * 
+   * @param speciesData Datos de la especie del Pokémon.
+   * @returns El "genus" del Pokémon.
+   */
+  private getPokemonGenus(speciesData: any): string {
+    return speciesData.genera.find((entry: any) => entry.language.name === 'es')?.genus || 'Tipo no disponible';
+  }
+
+  /**
+   * Extrae la descripción del Pokémon de los datos de la especie.
+   * 
+   * @param speciesData Datos de la especie del Pokémon.
+   * @returns La descripción del Pokémon.
+   */
+  private getPokemonDescription(speciesData: any): string {
+    return speciesData.flavor_text_entries.find(
+      (entry: any) => entry.language.name === 'es'
+    )?.flavor_text || 'Descripción no disponible';
+  }
 }

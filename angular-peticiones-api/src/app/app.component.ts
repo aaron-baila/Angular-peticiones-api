@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Porquemon } from './porquemon';
-import { peticionService } from './peticion.service';
+import { PeticionService } from './peticion.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -18,7 +18,7 @@ export class AppComponent {
   noResults: boolean = false; // Indica si no se encuentran resultados
 
   nextPokemon() {
-    if (this.pokemon == null) {
+    if (this.pokemon == null || this.pokemon.id == 1025) {
       this.searchTerm = '1';
     } else {
       const numeroPokemonActual: number = this.pokemon.id + 1;
@@ -29,7 +29,7 @@ export class AppComponent {
 
   beforePokemon() {
     if (this.pokemon == null || this.pokemon.id == 1) {
-      this.searchTerm = '1025';  
+      this.searchTerm = '1025';
     } else {
       const numeroPokemonActual: number = this.pokemon.id - 1;
       this.searchTerm = numeroPokemonActual.toString();
@@ -39,6 +39,11 @@ export class AppComponent {
 
   addNumber(num: number) {
     this.searchTerm += num; // Agrega el número al campo de búsqueda
+    const idPokemon = Number(this.searchTerm);
+    if (idPokemon > 1025) {
+      this.searchTerm = '1025';
+    }
+
     this.searchPokemon();
   }
 
@@ -47,7 +52,7 @@ export class AppComponent {
     this.searchPokemon();
   }
 
-  constructor(private peticionService: peticionService) {}
+  constructor(private peticionService: PeticionService) {}
 
   ngOnInit(): void {
     this.searchPokemon(); // Llamar al método de búsqueda cuando se inicializa el componente
